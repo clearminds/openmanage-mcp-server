@@ -1,6 +1,6 @@
-# openmanage-mcp-server
+# clr-openmanage-mcp
 
-[![PyPI](https://img.shields.io/pypi/v/openmanage-mcp-server)](https://pypi.org/project/openmanage-mcp-server/)
+[![PyPI](https://img.shields.io/pypi/v/clr-openmanage-mcp)](https://pypi.org/project/clr-openmanage-mcp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
@@ -20,9 +20,9 @@ MCP server for Dell OpenManage Enterprise (OME) — monitor and manage Dell serv
 ## Installation
 
 ```bash
-pip install openmanage-mcp-server
+pip install clr-openmanage-mcp
 # or
-uvx openmanage-mcp-server
+uvx clr-openmanage-mcp
 ```
 
 ## Configuration
@@ -61,7 +61,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "openmanage": {
       "command": "uvx",
-      "args": ["openmanage-mcp-server"]
+      "args": ["clr-openmanage-mcp"]
     }
   }
 }
@@ -72,7 +72,7 @@ Add to your `claude_desktop_config.json`:
 Add via CLI:
 
 ```bash
-claude mcp add openmanage -- uvx openmanage-mcp-server
+claude mcp add openmanage -- uvx clr-openmanage-mcp
 ```
 
 Or add to your `.mcp.json`:
@@ -81,7 +81,7 @@ Or add to your `.mcp.json`:
 {
   "openmanage": {
     "command": "uvx",
-    "args": ["openmanage-mcp-server"]
+    "args": ["clr-openmanage-mcp"]
   }
 }
 ```
@@ -96,7 +96,7 @@ Add to your VS Code settings or `.vscode/mcp.json`:
     "servers": {
       "openmanage": {
         "command": "uvx",
-        "args": ["openmanage-mcp-server"]
+        "args": ["clr-openmanage-mcp"]
       }
     }
   }
@@ -110,7 +110,7 @@ Add to your VS Code settings or `.vscode/mcp.json`:
 To run as a standalone HTTP server:
 
 ```bash
-openmanage-mcp-server --transport http --host 0.0.0.0 --port 8000
+clr-openmanage-mcp --transport http --host 0.0.0.0 --port 8000
 ```
 
 ## Tools
@@ -189,10 +189,10 @@ All tools are **read-only** except `ome_alert_ack` and `ome_alert_ack_all`, whic
 ## Development
 
 ```bash
-git clone https://github.com/clearminds/openmanage-mcp-server.git
-cd openmanage-mcp-server
+git clone https://github.com/clearminds/clr-openmanage-mcp.git
+cd clr-openmanage-mcp
 uv sync
-uv run openmanage-mcp-server
+uv run clr-openmanage-mcp
 ```
 
 ## License
