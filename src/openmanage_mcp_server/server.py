@@ -466,12 +466,15 @@ def main() -> None:
     parser.add_argument("--ome-password", type=str, default=None)
     args = parser.parse_args()
 
-    # CLI args override env vars
+    # Load credentials (env vars first, then config file)
+    creds = settings.load_credentials()
+
+    # CLI args override everything
     transport = args.transport or settings.ome_transport
     log_level = args.log_level or settings.ome_log_level
-    ome_host = args.ome_host or settings.ome_host
-    ome_username = args.ome_username or settings.ome_username
-    ome_password = args.ome_password or settings.ome_password
+    ome_host = args.ome_host or creds.get("host", "")
+    ome_username = args.ome_username or creds.get("username", "")
+    ome_password = args.ome_password or creds.get("password", "")
 
     logging.config.dictConfig(
         {
