@@ -35,9 +35,23 @@ class OmeClient:
 
     Creates an X-Auth-Token session on init, uses it for all requests,
     and cleans up on close. SSL verification is disabled (self-signed certs).
+
+    Attributes:
+        base_url: The base URL for the OME appliance (e.g. ``https://ome.example.com``).
+        username: The OME API username.
+        password: The OME API password.
+        token: The X-Auth-Token for the current session, or ``None`` before auth.
+        session_id: The OME session ID, or ``None`` before auth.
     """
 
     def __init__(self, host: str, username: str, password: str) -> None:
+        """Initialize the OME client and authenticate.
+
+        Args:
+            host: The OME appliance hostname or IP address.
+            username: The OME API username.
+            password: The OME API password.
+        """
         self.base_url = f"https://{host}"
         self.username = username
         self.password = password
@@ -95,6 +109,19 @@ class OmeClient:
         Follows @odata.nextLink to fetch all pages unless top is set.
         OData $ params are passed as literal (not URL-encoded) because
         OME rejects percent-encoded parameter names.
+
+        Args:
+            path: The API endpoint path (e.g. "/api/DeviceService/Devices").
+            params: Optional OData query parameters.
+            top: Optional OData $top limit for result count.
+
+        Returns:
+            The parsed JSON response body as a dictionary. When the response
+            contains paginated ``value`` items, all pages are merged into
+            a single result.
+
+        Raises:
+            httpx.HTTPStatusError: If the HTTP response indicates an error.
         """
         # Build URL with OData params
         url = path
@@ -102,8 +129,8 @@ class OmeClient:
         if top:
             qp["$top"] = str(top)
 
-        all_values: list[dict] = []
-        first_response: dict | None = None
+        all_values: list[dict[str, Any]] = []
+        first_response: dict[str, Any] | None = None
 
         while url:
             resp = self._http.get(
@@ -138,7 +165,15 @@ class OmeClient:
         return result
 
     def post(self, path: str, data: Any = None) -> tuple[int, Any]:
-        """POST with token auth. Returns (status_code, response_body)."""
+        """POST with token auth.
+
+        Args:
+            path: The API endpoint path.
+            data: Optional JSON-serializable request body.
+
+        Returns:
+            A tuple of (HTTP status code, parsed response body).
+        """
         resp = self._http.post(
             path,
             json=data,

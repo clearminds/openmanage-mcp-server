@@ -18,6 +18,13 @@ class Settings(BaseSettings):
     Priority order:
     1. ~/.config/openmanage/credentials.json
     2. Environment variables (OME_HOST, OME_USERNAME, OME_PASSWORD) - override
+
+    Attributes:
+        ome_host: The OME appliance hostname or IP address.
+        ome_username: The OME API username.
+        ome_password: The OME API password.
+        ome_transport: The MCP transport type (``stdio`` or ``http``).
+        ome_log_level: The logging level for the server.
     """
 
     ome_host: str = ""

@@ -30,7 +30,17 @@ def _build_alert_filter(
     category: str | None = None,
     status: str | None = None,
 ) -> str | None:
-    """Build OData $filter string from severity/category/status."""
+    """Build OData $filter string from severity/category/status.
+
+    Args:
+        severity: Severity level (critical, warning, info, or normal).
+        category: SubCategoryName value (e.g. "Warranty").
+        status: Acknowledgement status (unack or ack).
+
+    Returns:
+        An OData ``$filter`` string combining all provided filters with
+        ``and``, or ``None`` if no filters are specified.
+    """
     parts = []
     if severity:
         sev_val = SEVERITY_MAP.get(severity.lower())
