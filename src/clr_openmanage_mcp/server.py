@@ -21,6 +21,8 @@ from clr_openmanage_mcp.ome_client import (
 mcp = FastMCP("OpenManage Enterprise")
 _client: OmeClient | None = None
 
+WRITE_TOOLS = ["ome_alert_ack", "ome_alert_ack_all"]
+
 
 # ── Helper: build OData filter ───────────────────────────────────────
 
@@ -474,6 +476,12 @@ def main() -> None:
     parser.add_argument("--ome-host", type=str, default=None)
     parser.add_argument("--ome-username", type=str, default=None)
     parser.add_argument("--ome-password", type=str, default=None)
+    parser.add_argument(
+        "--read-only",
+        action="store_true",
+        default=None,
+        help="Run in read-only mode (hide write tools)",
+    )
     args = parser.parse_args()
 
     creds = settings.load_credentials()
@@ -513,6 +521,12 @@ def main() -> None:
 
     logger.info("Connecting to OME at %s", ome_host)
     _client = OmeClient(ome_host, ome_username, ome_password)
+
+    read_only = args.read_only if args.read_only is not None else settings.ome_read_only
+    if read_only and WRITE_TOOLS:
+        for name in WRITE_TOOLS:
+            mcp.remove_tool(name)
+        logger.info("Read-only mode: %d write tools removed", len(WRITE_TOOLS))
 
     try:
         if transport == "stdio":

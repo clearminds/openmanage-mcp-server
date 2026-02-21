@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     ome_password: str = ""
     ome_transport: str = "stdio"
     ome_log_level: str = "INFO"
+    ome_read_only: bool = False
 
     model_config = {"env_prefix": ""}
 
