@@ -12,6 +12,7 @@ from fastmcp import FastMCP
 
 from clr_openmanage_mcp.config import Settings
 from clr_openmanage_mcp.ome_client import (
+from clr_openmanage_mcp.middleware import ToolValidationMiddleware
     HEALTH_NAMES,
     SEVERITY_MAP,
     STATUS_MAP,
@@ -19,6 +20,7 @@ from clr_openmanage_mcp.ome_client import (
 )
 
 mcp = FastMCP("OpenManage Enterprise")
+mcp.add_middleware(ToolValidationMiddleware())
 _client: OmeClient | None = None
 
 WRITE_TOOLS = ["ome_alert_ack", "ome_alert_ack_all"]
