@@ -11,8 +11,8 @@ from typing import Any
 from fastmcp import FastMCP
 
 from clr_openmanage_mcp.config import Settings
-from clr_openmanage_mcp.ome_client import (
 from clr_openmanage_mcp.middleware import ToolValidationMiddleware
+from clr_openmanage_mcp.ome_client import (
     HEALTH_NAMES,
     SEVERITY_MAP,
     STATUS_MAP,

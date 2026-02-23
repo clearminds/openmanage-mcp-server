@@ -49,6 +49,7 @@ Optional:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `OME_READ_ONLY` | Run in read-only mode | `false` |
 | `OME_TRANSPORT` | Transport protocol (`stdio` or `http`) | `stdio` |
 | `OME_LOG_LEVEL` | Log level | `INFO` |
 
