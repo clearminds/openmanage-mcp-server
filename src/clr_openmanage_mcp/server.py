@@ -25,6 +25,11 @@ _client: OmeClient | None = None
 
 WRITE_TOOLS = ["ome_alert_ack", "ome_alert_ack_all"]
 
+# Imported here (not at the top) on purpose: annotations.py needs ``mcp`` from
+# this module, so importing it before the ``mcp = FastMCP(...)`` line above
+# would be a circular import. Do not move.
+from clr_openmanage_mcp.annotations import read_tool, write_tool  # noqa: E402
+
 
 # ── Helper: build OData filter ───────────────────────────────────────
 
@@ -62,7 +67,7 @@ def _build_alert_filter(
 # ── System tools ─────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def ome_version() -> dict[str, Any]:
     """Get OME version, build info, and operation status.
 
@@ -75,7 +80,7 @@ def ome_version() -> dict[str, Any]:
 # ── Device tools ─────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def ome_list_devices(top: int | None = None) -> list[dict[str, Any]]:
     """List all managed devices in OpenManage Enterprise.
 
@@ -101,7 +106,7 @@ def ome_list_devices(top: int | None = None) -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def ome_get_device(device_id: int) -> dict[str, Any]:
     """Get full detail for a single device by ID.
 
@@ -114,7 +119,7 @@ def ome_get_device(device_id: int) -> dict[str, Any]:
     return _client.get(f"/api/DeviceService/Devices({device_id})")
 
 
-@mcp.tool
+@read_tool
 def ome_device_health() -> dict[str, Any]:
     """Get aggregate device health summary — count by status.
 
@@ -140,7 +145,7 @@ def ome_device_health() -> dict[str, Any]:
 # ── Alert tools ──────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def ome_list_alerts(
     severity: str | None = None,
     category: str | None = None,
@@ -179,7 +184,7 @@ def ome_list_alerts(
     ]
 
 
-@mcp.tool
+@read_tool
 def ome_get_alert(alert_id: int) -> dict[str, Any]:
     """Get full detail for a single alert by ID.
 
@@ -191,7 +196,7 @@ def ome_get_alert(alert_id: int) -> dict[str, Any]:
     return _client.get(f"/api/AlertService/Alerts({alert_id})")
 
 
-@mcp.tool
+@read_tool
 def ome_alert_count() -> dict[str, Any]:
     """Get alert count aggregated by severity.
 
@@ -209,7 +214,7 @@ def ome_alert_count() -> dict[str, Any]:
     return {"total": len(rows), "by_severity": dict(counts.most_common())}
 
 
-@mcp.tool
+@write_tool
 def ome_alert_ack(alert_ids: list[int]) -> dict[str, Any]:
     """Acknowledge one or more alerts by ID.
 
@@ -230,7 +235,7 @@ def ome_alert_ack(alert_ids: list[int]) -> dict[str, Any]:
     return {"error": f"HTTP {status_code}", "detail": body}
 
 
-@mcp.tool
+@write_tool
 def ome_alert_ack_all(
     severity: str | None = None,
     category: str | None = None,
@@ -282,7 +287,7 @@ def ome_alert_ack_all(
 # ── Warranty tools ───────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def ome_list_warranties(top: int | None = None) -> list[dict[str, Any]]:
     """List all warranty records.
 
@@ -307,7 +312,7 @@ def ome_list_warranties(top: int | None = None) -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def ome_warranties_expired() -> list[dict[str, Any]]:
     """List warranties that have expired (past EndDate).
 
@@ -351,7 +356,7 @@ def ome_warranties_expired() -> list[dict[str, Any]]:
 # ── Group, Job, Policy, Firmware tools ───────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def ome_list_groups(top: int | None = None) -> list[dict[str, Any]]:
     """List device groups.
 
@@ -373,7 +378,7 @@ def ome_list_groups(top: int | None = None) -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def ome_list_jobs(top: int | None = None) -> list[dict[str, Any]]:
     """List jobs, most recent first.
 
@@ -411,7 +416,7 @@ def ome_list_jobs(top: int | None = None) -> list[dict[str, Any]]:
     return result
 
 
-@mcp.tool
+@read_tool
 def ome_list_policies(top: int | None = None) -> list[dict[str, Any]]:
     """List alert policies.
 
@@ -433,7 +438,7 @@ def ome_list_policies(top: int | None = None) -> list[dict[str, Any]]:
     ]
 
 
-@mcp.tool
+@read_tool
 def ome_list_firmware(top: int | None = None) -> list[dict[str, Any]]:
     """List firmware compliance baselines.
 

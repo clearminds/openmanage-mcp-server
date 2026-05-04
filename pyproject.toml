@@ -27,6 +27,12 @@ dependencies = [
     "pydantic-settings>=2.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/clearminds/clr-openmanage-mcp"
 Repository = "https://github.com/clearminds/clr-openmanage-mcp"
