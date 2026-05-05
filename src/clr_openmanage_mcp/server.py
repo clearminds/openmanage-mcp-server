@@ -457,29 +457,6 @@ def ome_list_firmware(top: int | None = None) -> list[dict[str, Any]]:
     ]
 
 
-# ── Composite init ───────────────────────────────────────────────────
-
-
-def init_composite() -> FastMCP:
-    """Initialize for composite mounting. Returns the FastMCP instance."""
-    global _client
-
-    settings = Settings()
-    creds = settings.load_credentials()
-
-    ome_host = creds.get("host", "")
-    ome_username = creds.get("username", "")
-    ome_password = creds.get("password", "")
-
-    _client = OmeClient(ome_host, ome_username, ome_password)
-
-    if settings.ome_read_only and WRITE_TOOLS:
-        for name in WRITE_TOOLS:
-            mcp.remove_tool(name)
-
-    return mcp
-
-
 # ── Main entry point ─────────────────────────────────────────────────
 
 
